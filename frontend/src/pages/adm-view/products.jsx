@@ -1,4 +1,5 @@
 import ProductImageUpload from "@/components/adm-view/image-upload"
+import AdminProductTile from "@/components/adm-view/product-tile"
 import CommonForm from "@/components/common/form"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
@@ -64,6 +65,14 @@ function AdminProducts() {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {productList && productList.length > 0 
+        ? productList.map((productItem) => (
+          <AdminProductTile 
+          key={productItem.id}
+          />
+        ))
+      : null}
+      </div>
         <Sheet open={openCreateProductsDialog} 
         onOpenChange={() => setOpenCreateProductsDialog(false)}>
           <SheetContent side='right' className='overflow-auto'>
@@ -89,7 +98,7 @@ function AdminProducts() {
           </div>
           </SheetContent>
         </Sheet>
-      </div>
+
     </Fragment>
   )
 }

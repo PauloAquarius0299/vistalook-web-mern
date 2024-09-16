@@ -11,11 +11,25 @@ import { Skeleton } from "../ui/skeleton";
 const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, imageLoadingState}) => {
     const inputRef = useRef(null);
 
-    function handleImageFileChange(event){
-        console.log(event.target.files);
+    function handleImageFileChange(event) {
         const selectedFile = event.target.files?.[0];
-        if (selectedFile) setImageFile(selectedFile)
-    }
+        if (selectedFile) {
+          const isValidImageType = selectedFile.type.startsWith("image/");
+          const maxSizeInBytes = 5 * 1024 * 1024; 
+      
+          if (!isValidImageType) {
+            alert("Por favor, selecione um arquivo de imagem válido.");
+            return;
+          }
+      
+          if (selectedFile.size > maxSizeInBytes) {
+            alert("O tamanho da imagem deve ser inferior a 5MB.");
+            return;
+          }
+      
+          setImageFile(selectedFile);
+        }
+      }      
 
     function handleDragOver(event){
         event.preventDefault();
@@ -36,25 +50,37 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
     
     console.log(imageFile);
 
-    async function uploadImageToCloudinary(){
-        setImageLoadingState(true)
-        const data = new FormData();
-        data.append('my_file', imageFile);
-        const response = await axios.post(
+    async function uploadImageToCloudinary() {
+        try {
+          setImageLoadingState(true);
+          const data = new FormData();
+          data.append("my_file", imageFile);
+      
+          const response = await axios.post(
             "http://localhost:5000/api/admin/products/upload-image",
             data
-        );
-        console.log(response, 'response');
-
-        if(response?.data?.success) {
-            setUploadedImageUrl(response.data.result.url)
-            setImageLoadingState(false)
+          );
+      
+          if (response?.data?.success) {
+            setUploadedImageUrl(response.data.result.url);
+          } else {
+            console.error("Erro no upload da imagem");
+          }
+        } catch (error) {
+          console.error("Erro ao fazer upload", error);
+        } finally {
+          setImageLoadingState(false);
         }
-    }
+      }      
 
-    useEffect(() =>{
-        if(imageFile !== null) uploadImageToCloudinary()
-    }, [imageFile])
+      useEffect(() => {
+        if (imageFile && imageFile.type.startsWith("image/")) {
+          uploadImageToCloudinary();
+        } else {
+          setImageFile(null); 
+        }
+      }, [imageFile]);
+      
 
   return (
     <div className="w-full max-w-md mx-auto mt-4">
@@ -68,7 +94,7 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
             !imageFile ? (
             <Label htmlFor='image-upload' className='flex flex-col items-center justify-center h-32 cursor-pointer'>
                 <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
-                <span>Arraste ou Click e carrege a imagem</span>
+                <span>Arraste ou Clique e carrege a imagem</span>
             </Label>
             ) : imageLoadingState ? ( 
                 <Skeleton className='h-10 bg-gray-100' /> 

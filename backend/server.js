@@ -30,6 +30,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth', authRouter);
-app.use('/api/admin/products', adminProductsRouter)
+app.use('/api/admin/products', adminProductsRouter);
 
 app.listen(PORT, ()=> console.log(`Servidor rodando na porta ${PORT}`))
