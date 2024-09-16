@@ -79,14 +79,14 @@ export const addProductFormElements = [
     ],
   },
   {
-    label: "Preço",
+    label: "Preço Normal",
     name: "price",
     componentType: "input",
     type: "number",
     placeholder: "Digite o valor",
   },
   {
-    label: "Preço de Venda",
+    label: "Preço do Desconto",
     name: "salePrice",
     componentType: "input",
     type: "number",
