@@ -41,32 +41,32 @@ export const loginFormControls = [
 
 export const addProductFormElements = [
   {
-    label: "Title",
+    label: "Titulo",
     name: "title",
     componentType: "input",
     type: "text",
-    placeholder: "Enter product title",
+    placeholder: "Digite o titulo",
   },
   {
-    label: "Description",
+    label: "Descrinção",
     name: "description",
     componentType: "textarea",
-    placeholder: "Enter product description",
+    placeholder: "Faça a descrinção do seu produto",
   },
   {
-    label: "Category",
+    label: "Categoria",
     name: "category",
     componentType: "select",
     options: [
-      { id: "men", label: "Men" },
-      { id: "women", label: "Women" },
-      { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "men", label: "Masculino" },
+      { id: "women", label: "Feminino" },
+      { id: "kids", label: "Infantil" },
+      { id: "accessories", label: "Acessorios" },
+      { id: "footwear", label: "Calçados" },
     ],
   },
   {
-    label: "Brand",
+    label: "Marca",
     name: "brand",
     componentType: "select",
     options: [
@@ -79,25 +79,25 @@ export const addProductFormElements = [
     ],
   },
   {
-    label: "Price",
+    label: "Preço",
     name: "price",
     componentType: "input",
     type: "number",
-    placeholder: "Enter product price",
+    placeholder: "Digite o valor",
   },
   {
-    label: "Sale Price",
+    label: "Preço de Venda",
     name: "salePrice",
     componentType: "input",
     type: "number",
-    placeholder: "Enter sale price (optional)",
+    placeholder: "Preço de desconto (optional)",
   },
   {
-    label: "Total Stock",
+    label: "Estoque Total",
     name: "totalStock",
     componentType: "input",
     type: "number",
-    placeholder: "Enter total stock",
+    placeholder: "Quantos em estoque",
   },
 ];
 
