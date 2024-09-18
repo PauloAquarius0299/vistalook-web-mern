@@ -109,37 +109,37 @@ export const shoppingViewHeaderMenuItems = [
   },
   {
     id: "products",
-    label: "Products",
+    label: "Produtos",
     path: "/shop/listing",
   },
   {
     id: "men",
-    label: "Men",
+    label: "Masculino",
     path: "/shop/listing",
   },
   {
     id: "women",
-    label: "Women",
+    label: "Feminino",
     path: "/shop/listing",
   },
   {
     id: "kids",
-    label: "Kids",
+    label: "Infantil",
     path: "/shop/listing",
   },
   {
     id: "footwear",
-    label: "Footwear",
+    label: "Calçados",
     path: "/shop/listing",
   },
   {
     id: "accessories",
-    label: "Accessories",
+    label: "Acessorios",
     path: "/shop/listing",
   },
   {
     id: "search",
-    label: "Search",
+    label: "Pesquisar",
     path: "/shop/search",
   },
 ];
@@ -162,14 +162,14 @@ export const brandOptionsMap = {
 };
 
 export const filterOptions = {
-  category: [
-    { id: "men", label: "Men" },
-    { id: "women", label: "Women" },
-    { id: "kids", label: "Kids" },
-    { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" },
+  Categoria: [
+    { id: "men", label: "Masculino" },
+    { id: "women", label: "Feminino" },
+    { id: "kids", label: "Infantil" },
+    { id: "accessories", label: "Acessorios" },
+    { id: "footwear", label: "Calçados" },
   ],
-  brand: [
+  Marcas: [
     { id: "nike", label: "Nike" },
     { id: "adidas", label: "Adidas" },
     { id: "puma", label: "Puma" },
@@ -180,10 +180,10 @@ export const filterOptions = {
 };
 
 export const sortOptions = [
-  { id: "price-lowtohigh", label: "Price: Low to High" },
-  { id: "price-hightolow", label: "Price: High to Low" },
-  { id: "title-atoz", label: "Title: A to Z" },
-  { id: "title-ztoa", label: "Title: Z to A" },
+  { id: "price-lowtohigh", label: "Preço: Menor ao Maior" },
+  { id: "price-hightolow", label: "Preço: Maior ao Menor" },
+  { id: "title-atoz", label: "Titulo: A to Z" },
+  { id: "title-ztoa", label: "Titulo: Z to A" },
 ];
 
 export const addressFormControls = [
