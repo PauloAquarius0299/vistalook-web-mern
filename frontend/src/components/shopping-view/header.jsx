@@ -4,15 +4,18 @@ import { Button } from "../ui/button"
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react"
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { Label } from "@radix-ui/react-label";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useEffect, useState } from "react";
+import UserCartWrapper from "./cart-wrapper";
+import { fetchCartItems } from "@/store/shop/cart-slice";
 
 function MenuItems(){
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [ searchParams, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
@@ -49,25 +52,40 @@ function MenuItems(){
   );
 };
 
-function HeaderRightContent(){
+function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
-
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleLogout() {
-    dispatch(logoutUser())
+    dispatch(logoutUser());
   }
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchCartItems(user?.id));
+    }
+  }, [dispatch, user?.id]);
 
   return (
     <div className='flex lg:items-center lg:flex-row flex-col gap-4'>
-      <Sheet>
-        <Button variant='outline' size='icon' className="relative">
-        <ShoppingCart className='w-6 h-6' />
-        <span className='sr-only'>Carrinho</span>
-      </Button>
+      <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
+        {/* Botão para abrir o carrinho */}
+        <Button onClick={() => setOpenCartSheet(true)} variant='outline' size='icon' className="relative">
+          <ShoppingCart className='w-6 h-6' />
+          <span className='sr-only'>Carrinho</span>
+        </Button>
+
+        {/* O conteúdo do carrinho */}
+        <UserCartWrapper 
+          setOpenCartSheet={setOpenCartSheet} 
+          cartItems={cartItems?.items || []} 
+        />
       </Sheet>
       
+      {/* Menu dropdown do usuário */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
@@ -77,11 +95,11 @@ function HeaderRightContent(){
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuLabel>Logado {user?.userName} </DropdownMenuLabel>
+          <DropdownMenuLabel>Logado como {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className='hover:bg-black hover:text-white cursor-pointer' onClick={() => navigate('/shop/account')} >
+          <DropdownMenuItem className='hover:bg-black hover:text-white cursor-pointer' onClick={() => navigate('/shop/account')}>
             <UserCog className="mr-2 h-4 w-4" />
-            Usuario
+            Usuário
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className='hover:bg-black hover:text-white cursor-pointer' onClick={handleLogout}>
@@ -91,8 +109,7 @@ function HeaderRightContent(){
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
-
+  );
 }
 
 function ShoppingHeader(){

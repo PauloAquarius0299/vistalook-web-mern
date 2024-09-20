@@ -4,7 +4,7 @@ import { Button } from "../ui/button"
 import { Badge } from '../ui/badge';
 
 
-const ShoppingProductTile = ({product, handleGetProductDetails}) => {
+const ShoppingProductTile = ({product, handleGetProductDetails, handleAddCart}) => {
   return (
     <Card className='w-full max-w-sm mx-auto'>
         <div onClick={() => handleGetProductDetails(product?._id)}>
@@ -34,10 +34,11 @@ const ShoppingProductTile = ({product, handleGetProductDetails}) => {
                     }
                 </div>
             </CardContent>
-            <CardFooter>
-                <Button className='w-full'>add ao carrinho</Button>
-            </CardFooter>
+            
         </div>
+        <CardFooter>
+                <Button onClick={() => handleAddCart(product?._id)} className='w-full'>add ao carrinho</Button>
+            </CardFooter>
     </Card>
   )
 }
@@ -53,6 +54,7 @@ ShoppingProductTile.propTypes = {
       salePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }).isRequired,
     handleGetProductDetails: PropTypes.func.isRequired,
+    handleAddCart: PropTypes.func.isRequired,
   };
 
 export default ShoppingProductTile
