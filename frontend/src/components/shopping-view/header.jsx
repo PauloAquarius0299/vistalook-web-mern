@@ -3,7 +3,6 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import { Button } from "../ui/button"
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react"
 import { shoppingViewHeaderMenuItems } from "@/config";
-import { Label } from "@radix-ui/react-label";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
@@ -11,6 +10,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useEffect, useState } from "react";
 import UserCartWrapper from "./cart-wrapper";
 import { fetchCartItems } from "@/store/shop/cart-slice";
+import { Label } from "../ui/label";
 
 function MenuItems(){
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function MenuItems(){
       getCurrentMenuItem.id !== "products" &&
       getCurrentMenuItem.id !== "search"
         ? {
-            category: [getCurrentMenuItem.id],
+            Categoria: [getCurrentMenuItem.id],
           }
         : null;
 
