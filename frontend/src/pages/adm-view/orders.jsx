@@ -1,8 +1,11 @@
+import AdminOrdersView from "@/components/adm-view/orders"
+
+
 
 const AdminOrders = () => {
   return (
     <div>
-      adm orders
+      <AdminOrdersView />
     </div>
   )
 }
