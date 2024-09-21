@@ -188,37 +188,37 @@ export const sortOptions = [
 
 export const addressFormControls = [
   {
-    label: "Address",
+    label: "Endereço",
     name: "address",
     componentType: "input",
     type: "text",
-    placeholder: "Enter your address",
+    placeholder: "Digite sua rua",
   },
   {
-    label: "City",
+    label: "Cidade",
     name: "city",
     componentType: "input",
     type: "text",
-    placeholder: "Enter your city",
+    placeholder: "Digite sua cidade",
   },
   {
-    label: "Pincode",
+    label: "CEP",
     name: "pincode",
     componentType: "input",
     type: "text",
-    placeholder: "Enter your pincode",
+    placeholder: "Digite seu CEP",
   },
   {
-    label: "Phone",
+    label: "Telefone",
     name: "phone",
     componentType: "input",
     type: "text",
-    placeholder: "Enter your phone number",
+    placeholder: "Digite seu numero de celular",
   },
   {
-    label: "Notes",
+    label: "Informação adicional",
     name: "notes",
     componentType: "textarea",
-    placeholder: "Enter any additional notes",
+    placeholder: "Descreva uma informação adicional para o entregador",
   },
 ];
