@@ -4,9 +4,9 @@ import { Card, CardContent, CardFooter } from "../ui/card"
 import { Label } from "../ui/label"
 
 
-const AddressCard = ({addressInfo, handleDeleteAddress, handleEditAddress}) => {
+const AddressCard = ({addressInfo, handleDeleteAddress, handleEditAddress, setCurrentSelectedAddress}) => {
   return (
-    <Card>
+    <Card onClick={()=> setCurrentSelectedAddress ? () => setCurrentSelectedAddress(addressInfo) : null}>
         <CardContent className='grid p-4 gap-4'>
             <Label>Endereço: {addressInfo?.address}</Label>
             <Label>Cidade: {addressInfo?.city}</Label>
@@ -32,6 +32,7 @@ AddressCard.propTypes = {
     }).isRequired,
     handleDeleteAddress: PropTypes.func.isRequired,
     handleEditAddress: PropTypes.func.isRequired,
+    setCurrentSelectedAddress: PropTypes.func.isRequired
 };
 
 export default AddressCard

@@ -81,7 +81,11 @@ function HeaderRightContent() {
         {/* O conteúdo do carrinho */}
         <UserCartWrapper 
           setOpenCartSheet={setOpenCartSheet} 
-          cartItems={cartItems?.items || []} 
+          cartItems={
+            cartItems && cartItems.items && cartItems.items.length > 0
+              ? cartItems.items
+              : []
+          }
         />
       </Sheet>
       

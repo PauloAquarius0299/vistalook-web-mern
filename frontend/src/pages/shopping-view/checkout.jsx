@@ -1,27 +1,101 @@
 
 import Address from '@/components/shopping-view/address'
 import img from '../../assets/login-hero.jpg'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import UserCartItemsContent from '@/components/shopping-view/cart-items-content'
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import { createNewOrder } from '@/store/shop/order-slice'
+import { useToast } from '@/hooks/use-toast'
 
 const ShoppingCheckout = () => {
-  const {cartItems}= useSelector(state=> state.shopCart);
+  const {cartItems}= useSelector((state)=> state.shopCart);
+  const {user}= useSelector((state)=> state.auth);
+  const {approvalURL} = useSelector(state=>state.shopOrder)
+  const [isPaymemntStart, setIsPaymemntStart] = useState(false)
+  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  const dispatch = useDispatch();
+  const {toast} = useToast()
+
+  console.log(currentSelectedAddress, 'addressListing')
 
   const totalCartAmount =
-    cartItems && cartItems.items && cartItems.items.length > 0
-      ? cartItems.items.reduce(
-          (sum, currentItem) =>
-            sum +
-            (currentItem?.salePrice > 0
-              ? currentItem?.salePrice
-              : currentItem?.price) *
-              currentItem?.quantity,
-          0
-        )
-      : 0;
+  cartItems && cartItems.items && cartItems.items.length > 0
+    ? cartItems.items.reduce(
+        (sum, currentItem) =>
+          sum +
+          (currentItem?.salePrice > 0
+            ? currentItem?.salePrice
+            : currentItem?.price) *
+            currentItem?.quantity,
+        0
+      )
+    : 0;
 
-  console.log(cartItems)
+  function handleInitiatePaypalPayment(){
+    
+    if(cartItems.length === 0){
+      toast({
+        title: 'Seu carrinho está vazio, add os seus produtos',
+        variant: 'destructive'
+      })
+
+      return
+    }
+
+    if(currentSelectedAddress === null){
+      toast({
+        title: 'PorFavor selecione um endereço para progredir',
+        variant: 'destructive'
+      })
+
+      return
+    }
+
+    const orderData = {
+      userId: user?.id,
+      cartId: cartItems?._id,
+      cartItems: cartItems.items.map((singleCartItem) => ({
+        productId: singleCartItem?.productId,
+        title: singleCartItem?.title,
+        image: singleCartItem?.image,
+        price:
+          singleCartItem?.salePrice > 0
+            ? singleCartItem?.salePrice
+            : singleCartItem?.price,
+        quantity: singleCartItem?.quantity,
+      })),
+      addressInfo: {
+        addressId: currentSelectedAddress?._id,
+        address: currentSelectedAddress?.address,
+        city: currentSelectedAddress?.city,
+        pincode: currentSelectedAddress?.pincode,
+        phone: currentSelectedAddress?.phone,
+        notes: currentSelectedAddress?.notes,
+      },
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "pending",
+      totalAmount: totalCartAmount,
+      orderDate: new Date(),
+      orderUpdateDate: new Date(),
+      paymentId: "",
+      payerId: "",
+    };
+
+    dispatch(createNewOrder(orderData)).then((data) => {
+      console.log(data, "paulodata");
+      if (data?.payload?.success) {
+        setIsPaymemntStart(true);
+      } else {
+        setIsPaymemntStart(false);
+      }
+    });
+  }
+
+  if (approvalURL) {
+    window.location.href = approvalURL;
+  }
 
   return (
     <div className='flex flex-col'>
@@ -32,11 +106,11 @@ const ShoppingCheckout = () => {
         />
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5'>
-        <Address />
+        <Address setCurrentSelectedAddress={setCurrentSelectedAddress} />
         <div className='flex flex-col gap-4'>
           {
             cartItems && cartItems.items && cartItems.items.length > 0 ?
-            cartItems.items.map(item=> <UserCartItemsContent key={item.id} cartItem={item} />):null
+            cartItems.items.map(item=> <UserCartItemsContent key={item.productId} cartItem={item} />):null
           }
           <div className='mt-8 space-y-4'>
             <div className='flex justify-between'>
@@ -45,7 +119,7 @@ const ShoppingCheckout = () => {
             </div>
         </div>
         <div className='w-full mt-4'>
-          <Button className='w-full'>Confirmar com Paypal</Button>
+          <Button onClick={handleInitiatePaypalPayment} className='w-full'>Confirmar com Paypal</Button>
         </div>
         </div>
       </div>

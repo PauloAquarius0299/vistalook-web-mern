@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from "react"
 import CommonForm from "../common/form"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -15,7 +16,7 @@ const initialAddressFormData = {
   notes: '',
 }
 
-const Address = () => {
+const Address = ({setCurrentSelectedAddress}) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null)
   const dispatch = useDispatch();
@@ -104,7 +105,8 @@ const Address = () => {
           key={singleAddressItem.id} 
           addressInfo={singleAddressItem} 
           handleDeleteAddress={handleDeleteAddress}
-          handleEditAddress={handleEditAddress} />): null
+          handleEditAddress={handleEditAddress} 
+          setCurrentSelectedAddress={setCurrentSelectedAddress}/>): null
        }
       </div>
       <CardHeader>
@@ -127,5 +129,9 @@ const Address = () => {
     </Card>
   )
 }
+
+Address.propTypes = {
+  setCurrentSelectedAddress: PropTypes.func.isRequired, 
+};
 
 export default Address
