@@ -37,7 +37,7 @@ const ShoppingProductTile = ({product, handleGetProductDetails, handleAddCart}) 
             
         </div>
         <CardFooter>
-                <Button onClick={() => handleAddCart(product?._id)} className='w-full'>add ao carrinho</Button>
+                <Button onClick={() => handleAddCart(product?._id, product?.totalStock)} className='w-full'>add ao carrinho</Button>
             </CardFooter>
     </Card>
   )
@@ -52,9 +52,10 @@ ShoppingProductTile.propTypes = {
       brand: PropTypes.string,
       price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       salePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      totalStock: PropTypes.number,
     }).isRequired,
     handleGetProductDetails: PropTypes.func.isRequired,
     handleAddCart: PropTypes.func.isRequired,
-  };
+};
 
 export default ShoppingProductTile

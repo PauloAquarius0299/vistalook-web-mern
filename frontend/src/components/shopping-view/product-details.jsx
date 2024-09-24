@@ -13,10 +13,27 @@ import { setProductDetails } from '@/store/shop/product-slice';
 const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
 
   const dispatch = useDispatch();
-  const {user} = useSelector(state=>state.auth);
+  const {user} = useSelector((state)=>state.auth);
+  const {cartItems} = useSelector((state)=> state.shopCart);
   const {toast} = useToast();
 
-  function handleAddCart(getCurrentProductId){
+  function handleAddCart(getCurrentProductId, getTotalStock){
+    let getCartItems = cartItems.items || [];
+
+    if(getCartItems.length){
+      const indexOfCurrentItem = getCartItems.findIndex(item=> item.productId === getCurrentProductId);
+      if(indexOfCurrentItem > -1){
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if(getQuantity + 1 > getTotalStock){
+          toast({
+            title: `Só ${getQuantity} quantidade pode ser adicionada para este item`,
+            variant: "destructive",
+          });
+          
+          return;
+        }
+      }
+    }
     dispatch(
       addToCart({
         userId: user?.id,
@@ -74,7 +91,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
             ) : null}
           </div>
           <div className="mt-5 mb-5">
-            <Button className="w-full" onClick={()=> handleAddCart(productDetails?._id)} >Add ao Carrinho</Button>
+            <Button className="w-full" onClick={()=> handleAddCart(productDetails?._id, productDetails?.totalStock)} >Add ao Carrinho</Button>
           </div>
           <Separator />
           <div className="max-h-[360px] overflow-auto">
@@ -122,6 +139,7 @@ ProductDetailsDialog.propTypes = {
     description: PropTypes.string,
     price: PropTypes.number,
     salePrice: PropTypes.number,
+    totalStock: PropTypes.number,
   }).isRequired,
 };
 

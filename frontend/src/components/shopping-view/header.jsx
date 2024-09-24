@@ -15,7 +15,7 @@ import { Label } from "../ui/label";
 function MenuItems(){
   const navigate = useNavigate();
   const location = useLocation();
-  const [ searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
@@ -117,7 +117,7 @@ function HeaderRightContent() {
 }
 
 function ShoppingHeader(){
-  const { isAuthenticated } = useSelector((state) => state.auth);;
+  //const { isAuthenticated } = useSelector((state) => state.auth);;
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
