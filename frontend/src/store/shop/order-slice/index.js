@@ -5,7 +5,9 @@ import axios from "axios"
 const initialState = {
     approvalURL : null,
     isLoading : false,
-    orderId : null
+    orderId : null,
+    orderList: [],
+    orderDetails: null,
 }
 
 export const createNewOrder = createAsyncThunk(
@@ -20,7 +22,7 @@ export const createNewOrder = createAsyncThunk(
     }
 );
 
-  export const capturePayment = createAsyncThunk(
+export const capturePayment = createAsyncThunk(
     "/order/capturePayment",
     async ({ paymentId, payerId, orderId }) => {
       const response = await axios.post(
@@ -63,7 +65,11 @@ export const getOrderDetails = createAsyncThunk(
 const shoppingOrderSlice = createSlice({
     name:'shoppingOrderSlice',
     initialState,
-    reducers : {},
+    reducers : {
+      setOrderDetails:(state)=> {
+        state.orderDetails = null
+      }
+    },
     extraReducers : (builder)=> {
         builder.addCase(createNewOrder.pending, (state) => {
             state.isLoading = true;
@@ -101,6 +107,8 @@ const shoppingOrderSlice = createSlice({
           state.orderDetails = null;
         });        
     }
-})
+});
+
+export const {resetOrderDetails} = shoppingOrderSlice.actions;
 
 export default shoppingOrderSlice.reducer

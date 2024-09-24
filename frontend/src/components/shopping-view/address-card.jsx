@@ -6,7 +6,7 @@ import { Label } from "../ui/label"
 
 const AddressCard = ({addressInfo, handleDeleteAddress, handleEditAddress, setCurrentSelectedAddress}) => {
   return (
-    <Card onClick={()=> setCurrentSelectedAddress ? () => setCurrentSelectedAddress(addressInfo) : null}>
+    <Card onClick={() => setCurrentSelectedAddress && setCurrentSelectedAddress(addressInfo)}>
         <CardContent className='grid p-4 gap-4'>
             <Label>Endereço: {addressInfo?.address}</Label>
             <Label>Cidade: {addressInfo?.city}</Label>

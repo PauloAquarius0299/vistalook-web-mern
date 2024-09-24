@@ -12,7 +12,7 @@ const ShoppingCheckout = () => {
   const {cartItems}= useSelector((state)=> state.shopCart);
   const {user}= useSelector((state)=> state.auth);
   const {approvalURL} = useSelector(state=>state.shopOrder)
-  const [isPaymemntStart, setIsPaymemntStart] = useState(false)
+  const [isPaymentStart, setIsPaymemntStart] = useState(false)
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const dispatch = useDispatch();
   const {toast} = useToast()
@@ -73,9 +73,9 @@ const ShoppingCheckout = () => {
         phone: currentSelectedAddress?.phone,
         notes: currentSelectedAddress?.notes,
       },
-      orderStatus: "pending",
+      orderStatus: "pendente",
       paymentMethod: "paypal",
-      paymentStatus: "pending",
+      paymentStatus: "pendente",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
@@ -119,7 +119,11 @@ const ShoppingCheckout = () => {
             </div>
         </div>
         <div className='w-full mt-4'>
-          <Button onClick={handleInitiatePaypalPayment} className='w-full'>Confirmar com Paypal</Button>
+          <Button onClick={handleInitiatePaypalPayment} className='w-full'>
+          {isPaymentStart
+                ? "Processando pagamento paypal..."
+                : "Confirmando com paypal"}
+          </Button>
         </div>
         </div>
       </div>
