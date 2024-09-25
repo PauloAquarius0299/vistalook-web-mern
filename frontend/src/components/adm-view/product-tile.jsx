@@ -1,6 +1,6 @@
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter } from "../ui/card"
-
+import PropTypes from "prop-types";
 
 function AdminProductTile({product, setFormData, setOpenCreateProductsDialog,setCurrentEditedId, handleDelete}){
   return (
@@ -39,6 +39,20 @@ function AdminProductTile({product, setFormData, setOpenCreateProductsDialog,set
         </div>
     </Card>
   )
-}
+};
+
+AdminProductTile.propTypes = {
+  product: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    title: PropTypes.string,
+    price: PropTypes.number.isRequired,
+    salePrice: PropTypes.number,
+  }).isRequired,
+  setFormData: PropTypes.func.isRequired,
+  setOpenCreateProductsDialog: PropTypes.func.isRequired,
+  setCurrentEditedId: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+};
 
 export default AdminProductTile
