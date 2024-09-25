@@ -3,19 +3,28 @@ import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { StarIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import { addToCart, fetchCartItems } from '@/store/shop/cart-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '@/hooks/use-toast';
 import { setProductDetails } from '@/store/shop/product-slice';
+import { Label } from '../ui/label';
+import StarRatingComponent from '../common/star-rating';
+import { useEffect, useState } from 'react';
+import { addReview, getReviews } from '@/store/shop/review-slice';
 
 const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
-
+  const [reviewMsg, setReviewMsg] = useState('');
+  const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   const {user} = useSelector((state)=>state.auth);
   const {cartItems} = useSelector((state)=> state.shopCart);
+  const {reviews} = useSelector((state)=> state.shopReview);
   const {toast} = useToast();
+
+  function handleRatingChange(getRating){
+    setRating(getRating)
+  }
 
   function handleAddCart(getCurrentProductId, getTotalStock){
     let getCartItems = cartItems.items || [];
@@ -52,8 +61,38 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
 
   function handleDialogClose(){
     setOpen(false)
-    dispatch(setProductDetails())
-  }
+    dispatch(setProductDetails());
+    setRating(0)
+    setReviewMsg('');
+  };
+
+  function handleAddReview(){
+    dispatch(addReview({
+      productId: productDetails?._id,
+      userId: user?.id,
+      userName: user?.userName,
+      reviewMessage: reviewMsg,
+      reviewValue: rating,
+    })).then(data=> {
+      if(data.payload.success){
+        setRating(0);
+        setReviewMsg('');
+        dispatch(getReviews(productDetails?._id));
+        toast({
+          title: 'Comentário adicionado com sucesso!'
+        })
+      }
+      console.log(data)
+    })
+  };
+
+  useEffect(() => {
+    if(productDetails !== null) dispatch(getReviews(productDetails?._id))
+  }, [productDetails]);
+
+  const averageReview = reviews && reviews.length > 0 ?
+        reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
+        reviews.length : 0;
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
@@ -97,30 +136,41 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
           <div className="max-h-[360px] overflow-auto">
             <h2 className="text-xl font-bold mb-4">Avaliação</h2>
             <div className="grid gap-6">
-              <div className="flex gap-4">
-                <Avatar className="w-10 h-10 border">
-                  <AvatarFallback>SM</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold">Paulo Cesar</h3>
-                  </div>
-                  <div className="flex items-center gap-0.5">
-                    <StarIcon className="w-5 h-5 fill-primary" />
-                    <StarIcon className="w-5 h-5 fill-primary" />
-                    <StarIcon className="w-5 h-5 fill-primary" />
-                    <StarIcon className="w-5 h-5 fill-primary" />
-                    <StarIcon className="w-5 h-5 fill-primary" />
-                  </div>
-                  <p className="text-muted-foreground">
-                    Esse produto é muito bom
-                  </p>
-                </div>
-              </div>
+                {
+                  reviews && reviews.length > 0 ?
+                  reviews.map(reviewItem =>    
+                  <div className="flex gap-4" key={reviewItem._id}>
+                    <Avatar className="w-10 h-10 border">
+                      <AvatarFallback>{reviewItem?.userName[0].toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold">{reviewItem?.userName}</h3>
+                      </div>
+                      <div className="flex items-center gap-0.5">
+                        <StarRatingComponent rating={averageReview} />
+                        ({averageReview.toFixed(2)})
+                      </div>
+                      <p className="text-muted-foreground">
+                      {reviewItem?.reviewMessage}
+                      </p>
+                    </div>
+                  </div> ) : <h1>Não há comentários</h1>
+                }
+
             </div>
-            <div className="mt-6 flex gap-2">
-              <Input placeholder="Escrever a avaliação..." />
-              <Button>Enviar</Button>
+            <div className="mt-10 flex-col flex gap-2">
+              <Label>Escreva seu comentário</Label>
+              <div className='flex gap-1'>
+                <StarRatingComponent rating={rating} handleRatingChange={handleRatingChange} />
+              </div>
+              <Input name='reviewMsg' 
+              value={reviewMsg}
+              onChange={(event) => setReviewMsg(event.target.value)} placeholder="Escrever a avaliação..." />
+              <Button
+              onClick={handleAddReview}
+              disabled={reviewMsg.trim() === ''}
+              >Enviar</Button>
             </div>
           </div>
         </div>

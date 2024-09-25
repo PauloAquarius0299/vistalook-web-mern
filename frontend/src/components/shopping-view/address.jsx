@@ -16,7 +16,7 @@ const initialAddressFormData = {
   notes: '',
 }
 
-const Address = ({setCurrentSelectedAddress}) => {
+const Address = ({setCurrentSelectedAddress, selectedId}) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null)
   const dispatch = useDispatch();
@@ -94,15 +94,14 @@ const Address = ({setCurrentSelectedAddress}) => {
       .every((item) => item);
   }
 
-  console.log(addressList, 'addresslist')
-
   return (
     <Card>
       <div className='mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-2'>
        {
         addressList && addressList.length > 0 ? 
         addressList.map(singleAddressItem => <AddressCard 
-          key={singleAddressItem.id} 
+          key={singleAddressItem.id}
+          selectedId={selectedId} 
           addressInfo={singleAddressItem} 
           handleDeleteAddress={handleDeleteAddress}
           handleEditAddress={handleEditAddress} 
@@ -132,6 +131,7 @@ const Address = ({setCurrentSelectedAddress}) => {
 
 Address.propTypes = {
   setCurrentSelectedAddress: PropTypes.func.isRequired, 
+  selectedId: PropTypes.func.isRequired,
 };
 
 export default Address
