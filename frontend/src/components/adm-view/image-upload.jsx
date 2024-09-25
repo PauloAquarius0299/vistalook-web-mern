@@ -8,7 +8,7 @@ import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
 
 
-const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, imageLoadingState, isEditMode}) => {
+const ProductImageUpload = ({imageFile, setImageFile, setUploadedImageUrl, setImageLoadingState, imageLoadingState, isEditMode, isCustomStyling = false}) => {
     const inputRef = useRef(null);
 
     function handleImageFileChange(event) {
@@ -83,7 +83,7 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
       
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4">
+    <div className={`w-full mt-4 ${isCustomStyling ? '' : "max-w-md mx-auto"}`}>
         <Label className='text-lg font-semibold mb-2 block' > upload image</Label>
        <div onDragOver={handleDragOver} onDrop={handleDrop} className={` ${isEditMode ? 'opacity-60' : ''} border-2 border-dashed rounded-lg p-4`}>
         <Input id='image-upload' type='file' 
@@ -118,11 +118,14 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
 }
 
 ProductImageUpload.propTypes = {
-    imageFile: PropTypes.object, 
-    setImageFile: PropTypes.func.isRequired,
-    uploadedImageUrl: PropTypes.string,
-    setUploadedImageUrl: PropTypes.func.isRequired,
-    setImageLoadingState: PropTypes.func.isRequired,
-  };
+  imageFile: PropTypes.object, 
+  setImageFile: PropTypes.func.isRequired,
+  uploadedImageUrl: PropTypes.string,
+  setUploadedImageUrl: PropTypes.func.isRequired,
+  setImageLoadingState: PropTypes.func.isRequired,
+  imageLoadingState: PropTypes.bool.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
+  isCustomStyling: PropTypes.bool,  
+};
 
 export default ProductImageUpload
