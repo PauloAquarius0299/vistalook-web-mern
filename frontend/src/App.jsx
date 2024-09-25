@@ -21,6 +21,7 @@ import { checkAuth } from './store/auth-slice'
 import { Skeleton } from './components/ui/skeleton'
 import PaypalReturnPage from './pages/shopping-view/paypal-return'
 import ShoppingPaymentSuccess from './pages/shopping-view/payment-success'
+import SearchProducts from './pages/shopping-view/search'
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
         <Route path='account' element={<ShoppingAccount />} />
         <Route path='paypal-return' element={<PaypalReturnPage />} />
         <Route path='paypal-success' element={<ShoppingPaymentSuccess />} />
+        <Route path='search' element={<SearchProducts />} />
         </Route>
         
          {/* Rotas para paginas não autorizadas*/}

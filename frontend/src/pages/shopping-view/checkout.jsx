@@ -45,7 +45,7 @@ const ShoppingCheckout = () => {
 
     if(currentSelectedAddress === null){
       toast({
-        title: 'PorFavor selecione um endereço para progredir',
+        title: 'Por Favor selecione um endereço para progredir',
         variant: 'destructive'
       })
 
