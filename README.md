@@ -17,3 +17,7 @@ No backend crei uma pasta controller onde por ele criei todos os componentes com
 * ExpressJs
 * Paypal
 * Cloudinary
+## LINK
+https://www.linkedin.com/feed/update/urn:li:activity:7245159020251017216/
+![Captura de Tela (288)](https://github.com/user-attachments/assets/7a4d7c86-94a1-4ce7-a5f1-0ef1e8536f8d)
+
